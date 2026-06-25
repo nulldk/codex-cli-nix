@@ -1,38 +1,15 @@
-# Repository Settings Configuration
+# Repository Settings
 
-This repository requires specific GitHub settings to enable automated updates.
+This fork updates itself with GitHub Actions and the built-in `GITHUB_TOKEN`.
+No external secrets are required.
 
-## Required Settings
+Required settings:
 
-### GitHub Actions Permissions
+1. Settings -> Actions -> General -> Workflow permissions:
+   - Enable read and write permissions.
+2. Actions must be enabled for the repository.
 
-1. Navigate to Settings → Actions → General
-2. Under "Workflow permissions":
-   - Select **"Read and write permissions"**
-   - Check **"Allow GitHub Actions to create and approve pull requests"**
-3. Click Save
-
-These settings allow the `update-claude-code.yml` workflow to:
-- Modify files in the repository
-- Create pull requests for version updates
-- Update the flake.lock file
-
-## Verification
-
-After configuring the settings, you can verify the workflow works by:
-
-```bash
-# Manually trigger the update workflow
-gh workflow run "Update Claude Code Version"
-
-# Check the workflow status
-gh run list --workflow="Update Claude Code Version"
-```
-
-## Troubleshooting
-
-If you see the error "GitHub Actions is not permitted to create or approve pull requests":
-- Ensure the settings above are properly configured
-- The repository must not have branch protection rules that prevent GitHub Actions from creating PRs
-- The workflow uses the built-in `GITHUB_TOKEN` which is automatically provided
-
+The update workflow commits directly to `main` when a newer official
+`openai/codex` release exists. It does not create pull requests, does not
+auto-merge pull requests, does not use Cachix, and does not sync from the
+original packaging repository.
